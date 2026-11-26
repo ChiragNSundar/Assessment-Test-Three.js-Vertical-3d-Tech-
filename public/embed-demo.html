@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MVP Visuals Shopify Store Simulator | Embedded Configurator Test</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased">
+  <!-- Mock Shopify Store Header -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded bg-sky-600 text-white font-black text-lg flex items-center justify-center">▲</div>
+        <span class="font-extrabold text-lg text-slate-900 tracking-tight">MVP Visuals Storefront</span>
+      </div>
+      <div class="flex items-center gap-6 text-sm font-semibold text-slate-600">
+        <a href="#" class="hover:text-sky-600">Custom Tents</a>
+        <a href="#" class="hover:text-sky-600">Table Covers</a>
+        <a href="#" class="hover:text-sky-600">Banners & Flags</a>
+        <div class="relative flex items-center gap-2 bg-slate-100 px-3 py-1.5 rounded-full border border-slate-200">
+          <span>🛒 Cart</span>
+          <span id="cartCountBadge" class="bg-sky-600 text-white text-xs px-2 py-0.5 rounded-full font-bold">0</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Product Breadcrumb & Header -->
+  <div class="max-w-7xl mx-auto px-4 py-4">
+    <div class="text-xs text-slate-500 mb-2">Home / Custom Tents / 10x10 Logo Canopy Tent / 3D Customizer</div>
+    <div class="flex flex-col md:flex-row md:items-center justify-between gap-2 border-b border-slate-200 pb-3">
+      <div>
+        <h1 class="text-2xl font-black text-slate-900">Custom 10x10 Logo Canopy Tent</h1>
+        <p class="text-sm text-slate-500">Commercial 600D Dye-Sublimation Print • Lifetime Frame Warranty • 2-Day Fast Production</p>
+      </div>
+      <div class="flex items-center gap-3">
+        <span class="bg-emerald-100 text-emerald-800 text-xs font-bold px-3 py-1 rounded-full border border-emerald-300">✓ In Stock • Ready to Print</span>
+        <div class="text-right">
+          <div class="text-xs text-slate-400">Live Configurator Price</div>
+          <div id="liveHostPrice" class="text-2xl font-black text-sky-600 font-mono">$319.00</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container: Iframe + External Shopify Panel -->
+  <div class="max-w-7xl mx-auto px-4 pb-12 grid grid-cols-1 lg:grid-cols-4 gap-6">
+    <!-- Iframe Container (3 Cols) -->
+    <div class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-lg overflow-hidden flex flex-col">
+      <div class="bg-slate-900 text-slate-300 px-4 py-2 text-xs font-mono flex items-center justify-between">
+        <span>Embedded Configurator (iframe sandbox)</span>
+        <span class="text-emerald-400">● postMessage Connected</span>
+      </div>
+      <iframe
+        id="configuratorFrame"
+        src="/"
+        class="w-full h-[780px] border-0"
+        title="Interactive 3D Configurator"
+        allow="accelerometer; camera"
+      ></iframe>
+    </div>
+
+    <!-- External Shopify PDP Controller & Event Log (1 Col) -->
+    <div class="flex flex-col gap-4">
+      <!-- Remote Host Controls Card -->
+      <div class="bg-white rounded-2xl border border-slate-200 shadow-md p-4 flex flex-col gap-3">
+        <h3 class="font-extrabold text-sm text-slate-900">Host Page Shopify Controls</h3>
+        <p class="text-xs text-slate-500">This panel simulates the parent Shopify theme communicating with the embedded configurator inside the iframe.</p>
+
+        <!-- Remote Size Selector -->
+        <div>
+          <label class="text-xs font-bold text-slate-700 block mb-1">Select Size via Host:</label>
+          <select id="hostSizeSelect" class="w-full bg-slate-50 border border-slate-300 rounded-lg p-2 text-xs font-semibold text-slate-800">
+            <option value="5x5">5x5 ft Compact ($249)</option>
+            <option value="6.5x6.5" selected>6.5x6.5 ft Standard ($319)</option>
+            <option value="8x8">8x8 ft Commercial ($389)</option>
+          </select>
+        </div>
+
+        <!-- External Add to Cart Button -->
+        <button
+          id="hostAddToCartBtn"
+          class="w-full py-3 bg-sky-600 hover:bg-sky-500 text-white rounded-xl font-bold text-xs flex items-center justify-center gap-2 shadow-md shadow-sky-600/30 transition"
+        >
+          <span>Trigger Iframe "Add to Cart"</span>
+        </button>
+
+        <button
+          id="hostGetConfigBtn"
+          class="w-full py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl font-semibold text-xs transition border border-slate-300"
+        >
+          Request Configuration JSON
+        </button>
+      </div>
+
+      <!-- Real-Time postMessage Log Monitor -->
+      <div class="bg-slate-900 text-slate-100 rounded-2xl border border-slate-800 shadow-md p-4 flex-1 flex flex-col">
+        <div class="flex items-center justify-between pb-2 border-b border-slate-800">
+          <span class="text-xs font-mono font-bold text-sky-400">postMessage Monitor</span>
+          <button id="clearLogBtn" class="text-[10px] text-slate-400 hover:text-white">Clear</button>
+        </div>
+        <div id="eventLog" class="flex-1 overflow-y-auto max-h-96 text-[10px] font-mono flex flex-col gap-1.5 mt-2 text-slate-300">
+          <div class="text-slate-500">[System] Listening for iframe messages...</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Script for Handling Parent-Child postMessage communication -->
+  <script>
+    const iframe = document.getElementById('configuratorFrame');
+    const eventLog = document.getElementById('eventLog');
+    const liveHostPrice = document.getElementById('liveHostPrice');
+    const cartCountBadge = document.getElementById('cartCountBadge');
+    let cartCount = 0;
+
+    function appendLog(type, msg, color = 'text-sky-300') {
+      const time = new Date().toLocaleTimeString();
+      const el = document.createElement('div');
+      el.className = 'p-1.5 bg-slate-950/60 rounded border border-slate-800';
+      el.innerHTML = `<span class="text-slate-500">[${time}]</span> <strong class="${color}">${type}</strong>: ${msg}`;
+      eventLog.prepend(el);
+    }
+
+    // Listen to messages from Configurator iframe
+    window.addEventListener('message', (event) => {
+      const data = event.data;
+      if (!data || typeof data !== 'object') return;
+
+      switch (data.type) {
+        case 'CONFIGURATOR_READY':
+          appendLog('CONFIGURATOR_READY', 'Three.js engine & 2D canvas initialized successfully!', 'text-emerald-400');
+          break;
+
+        case 'PRICE_UPDATED':
+          if (data.pricing) {
+            liveHostPrice.textContent = `$${data.pricing.total.toFixed(2)}`;
+            appendLog('PRICE_UPDATED', `Total: $${data.pricing.total.toFixed(2)} (Subtotal: $${data.pricing.subtotal.toFixed(2)})`, 'text-sky-400');
+          }
+          break;
+
+        case 'ADDED_TO_CART':
+          cartCount += 1;
+          cartCountBadge.textContent = cartCount;
+          appendLog('ADDED_TO_CART', `Received line item payload with ID ${data.payload.items[0].id}`, 'text-amber-400');
+          break;
+
+        case 'CONFIGURATION_DATA':
+          appendLog('CONFIGURATION_DATA', `State payload received (${JSON.stringify(data.configuration).length} bytes)`, 'text-purple-400');
+          break;
+
+        default:
+          break;
+      }
+    });
+
+    // Remote Size Selector handler
+    document.getElementById('hostSizeSelect').addEventListener('change', (e) => {
+      const newSize = e.target.value;
+      iframe.contentWindow.postMessage({ type: 'SET_SIZE', size: newSize }, '*');
+      appendLog('SENT: SET_SIZE', `Switched size to ${newSize}`, 'text-emerald-300');
+    });
+
+    // Remote Add to Cart button handler
+    document.getElementById('hostAddToCartBtn').addEventListener('click', () => {
+      iframe.contentWindow.postMessage({ type: 'TRIGGER_ADD_TO_CART' }, '*');
+      appendLog('SENT: TRIGGER_ADD_TO_CART', 'Requested iframe to add item to cart', 'text-amber-300');
+    });
+
+    // Request config
+    document.getElementById('hostGetConfigBtn').addEventListener('click', () => {
+      iframe.contentWindow.postMessage({ type: 'GET_CONFIGURATION' }, '*');
+      appendLog('SENT: GET_CONFIGURATION', 'Requested structured configuration JSON', 'text-purple-300');
+    });
+
+    // Clear log
+    document.getElementById('clearLogBtn').addEventListener('click', () => {
+      eventLog.innerHTML = '<div class="text-slate-500">[System] Log cleared.</div>';
+    });
+  </script>
+</body>
+</html>
