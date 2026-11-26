@@ -20,6 +20,26 @@ This project is a high-performance, production-grade **3D Interactive Product Co
 
 ---
 
+## 📸 Application Screenshots & Live Previews
+
+### 1. Split View: Real-Time 2D Canvas & 3D WebGL Synchronization
+![Split View 2D/3D Synchronization](./docs/screenshots/split-view-2d-3d-sync.jpg)
+*Figure 1: Split View mode demonstrating bidirectional 2D/3D synchronization. Custom typography ("CUSTOM BRANDING") placed on the 2D canvas cut template instantly reflects onto the 3D canopy peak with dynamic pricing updating to \$548.91 in real time.*
+
+---
+
+### 2. Full 3D Interactive Viewport
+![Full 3D Interactive Viewport with PBR Materials](./docs/screenshots/3d-viewport-focus.png)
+*Figure 2: Fullscreen 3D Viewport featuring PBR metallic frame finishes, realistic fabric shading, soft directional contact shadows, camera presets (Front, Back, Left, Right, Top, 3D Iso), and 360° auto-rotation.*
+
+---
+
+### 3. Shopify Storefront Iframe Embedding & `postMessage` Bridge
+![Shopify Storefront Parent PDP Simulator](./docs/screenshots/shopify-iframe-embed-demo.jpg)
+*Figure 3: Interactive Shopify Storefront PDP simulator (`/embed-demo.html`). Demonstrates the configurator embedded seamlessly in an iframe, exchanging bidirectional postMessage events with the host store for size changes, live pricing, and cart additions.*
+
+---
+
 ## 🚀 Quick Start & Live Demo
 
 ### 1. Prerequisites
