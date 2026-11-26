@@ -2,7 +2,10 @@
 
 > **Technical Assessment for Vertical 3D Tech**  
 > **Reference Product:** [MVP Visuals 10x10 Custom Canopy Tent](https://mvpvisuals.com/products/10x10-custom-canopy-tent)  
-> **Built with:** React 18, TypeScript, Three.js, Vite, Tailwind CSS, jsPDF
+> **Built with:** React 18, TypeScript, Three.js, Vite, Tailwind CSS, jsPDF  
+>  
+> 🌐 **Live Demo:** [https://assessment-test-three-js-vertical-3.vercel.app/](https://assessment-test-three-js-vertical-3.vercel.app/)  
+> 🛒 **Shopify Iframe Simulator Demo:** [https://assessment-test-three-js-vertical-3.vercel.app/embed-demo](https://assessment-test-three-js-vertical-3.vercel.app/embed-demo)
 
 ---
 
@@ -41,6 +44,10 @@ This project is a high-performance, production-grade **3D Interactive Product Co
 ---
 
 ## 🚀 Quick Start & Live Demo
+
+### 🌐 Live Production Deployment
+* **Live 3D Configurator:** [https://assessment-test-three-js-vertical-3.vercel.app/](https://assessment-test-three-js-vertical-3.vercel.app/)
+* **Shopify Storefront Iframe Simulator:** [https://assessment-test-three-js-vertical-3.vercel.app/embed-demo](https://assessment-test-three-js-vertical-3.vercel.app/embed-demo)
 
 ### 1. Prerequisites
 * **Node.js**: v18.0.0 or higher
@@ -182,7 +189,7 @@ The configurator is fully responsive and embeddable into external sites:
 | **Parent → Child** | `SET_CONFIGURATION`| Injects a saved configuration state |
 | **Parent → Child** | `TRIGGER_ADD_TO_CART` | Triggers the cart addition sequence from the host PDP |
 
-> 💡 **Try the Live Simulator:** Open [`public/embed-demo.html`](file:///E:/GitHub/Assessment%20Test%20%E2%80%93%20Three.js%20%5B%20Vertical%203d%20Tech%20%5D/public/embed-demo.html) in your browser to test parent-child message exchange in real time!
+> 💡 **Try the Live Simulator:** Open [https://assessment-test-three-js-vertical-3.vercel.app/embed-demo](https://assessment-test-three-js-vertical-3.vercel.app/embed-demo) (or local `public/embed-demo.html`) in your browser to test parent-child message exchange in real time!
 
 ### 6. Production Proof PDF Generation
 `PdfService.ts` utilizes `jspdf` to construct a pre-press proof sheet on the fly:
