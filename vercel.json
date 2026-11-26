@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/models/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        },
+        {
+          "key": "Content-Type",
+          "value": "model/gltf-binary"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/embed-demo",
+      "destination": "/embed-demo.html"
+    },
+    {
+      "source": "/((?!assets|models|sample-logos|docs|embed-demo.html|favicon.ico).*)",
+      "destination": "/index.html"
+    }
+  ]
+}
